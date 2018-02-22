@@ -125,7 +125,7 @@ public class TodoController {
      * @param category
      * @return boolean after successfully or unsuccessfully adding a todo
      */
-    public boolean addNewTodo(String owner, boolean status, String body, String category) {
+    public String addNewTodo(String owner, boolean status, String body, String category) {
 
         Document newTodo = new Document();
         newTodo.append("owner", owner);
@@ -135,17 +135,13 @@ public class TodoController {
 
         try {
             todoCollection.insertOne(newTodo);
-        }
-        catch(MongoException me)
-        {
+            ObjectId id = newTodo.getObjectId("_id");
+            System.err.println("Successfully added new user [_id=" + id + ", owner=" + owner + ", status=" + status + " body=" + body + " category=" + category + ']');
+            // return JSON.serialize(newTodo);
+            return JSON.serialize(id);
+        } catch(MongoException me) {
             me.printStackTrace();
-            return false;
+            return null;
         }
-
-        return true;
     }
-
-
-
-
 }
