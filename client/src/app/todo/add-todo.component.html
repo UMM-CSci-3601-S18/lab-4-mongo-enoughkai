@@ -8,16 +8,16 @@
                     <input matInput #input id="OwnerField" placeholder="Owner" [(ngModel)]="data.todo.owner">
                 </mat-form-field>
                 <mat-form-field>
-                    <input matInput #input id="ageField" type="number" placeholder="Age" [(ngModel)]="data.user.age">
+                    <input matInput #input id=statusField" type="boolean" placeholder="Status" [(ngModel)]="data.todo.boolean">
                 </mat-form-field>
                 <mat-form-field>
-                    <input matInput #input id="companyField" placeholder="Company" [(ngModel)]="data.user.company">
+                    <input matInput #input id="bodyField" placeholder="Body" [(ngModel)]="data.todo.body">
                 </mat-form-field>
                 <mat-form-field>
-                    <input matInput #input id="emailField" placeholder="Email" [(ngModel)]="data.user.email">
+                    <input matInput #input id="categoryField" placeholder="Category" [(ngModel)]="data.todo.category">
                 </mat-form-field>
-                <!-- [mat-dialog-close]="data.user" causes the data.user object to be returned when the dialog is closed. -->
-                <button mat-button id="confirmAddUserButton" [mat-dialog-close]="data.user" type="button">Add user</button>
+                <!-- [mat-dialog-close]="data.todo" causes the data.todo object to be returned when the dialog is closed. -->
+                <button mat-button id="confirmAddTodoButton" [mat-dialog-close]="data.todo" type="todo">Add todo</button>
             </mat-card-content>
         </mat-card>
         <button mat-raised-button id="exitWithoutAddingButton" (click)="onNoClick()" type="button">Exit</button>
