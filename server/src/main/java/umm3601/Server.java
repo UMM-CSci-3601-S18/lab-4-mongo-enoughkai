@@ -16,21 +16,20 @@ import static spark.Spark.*;
 import static spark.debug.DebugScreen.enableDebugScreen;
 
 public class Server {
-    private static final String userDatabaseName = "devUser";
-    private static final String todoDatabaseName = "devTodo";
+    private static final String databaseName = "dev";
     private static final int serverPort = 4567;
 
     public static void main(String[] args) throws IOException {
 
         MongoClient mongoClient = new MongoClient();
         // User database & controller
-        MongoDatabase userDatabase = mongoClient.getDatabase(userDatabaseName);
+        MongoDatabase userDatabase = mongoClient.getDatabase(databaseName);
 
         UserController userController = new UserController(userDatabase);
         UserRequestHandler userRequestHandler = new UserRequestHandler(userController);
 
         // todo database & controller
-        MongoDatabase todoDatabase = mongoClient.getDatabase(todoDatabaseName);
+        MongoDatabase todoDatabase = mongoClient.getDatabase(databaseName);
 
         TodoController todoController = new TodoController(todoDatabase);
         TodoRequestHandler todoRequestHandler = new TodoRequestHandler(todoController);
