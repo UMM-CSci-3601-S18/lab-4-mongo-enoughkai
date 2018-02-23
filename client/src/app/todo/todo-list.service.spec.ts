@@ -2,12 +2,12 @@ import {HttpClientTestingModule, HttpTestingController} from '@angular/common/ht
 import {TestBed} from '@angular/core/testing';
 import {HttpClient} from '@angular/common/http';
 
-import {User} from './user';
-import {UserListService} from './user-list.service';
+import {Todo} from './todo';
+import {TodoListService} from './todo-list.service';
 
-describe('User list service: ', () => {
+describe('Todo list service: ', () => {
     // A small collection of test users
-    const testUsers: User[] = [
+    const testTodos: Todo[] = [
         {
             _id: 'chris_id',
             name: 'Chris',
@@ -30,8 +30,8 @@ describe('User list service: ', () => {
             email: 'jamie@frogs.com'
         }
     ];
-    const mUsers: User[] = testUsers.filter(user =>
-        user.company.toLowerCase().indexOf('m') !== -1
+    const mTodos: Todo[] = testTodos.filter(todo =>
+        todo.body.toLowerCase().indexOf('m') !== -1
     );
 
     // We will need some url information from the userListService to meaningfully test company filtering;

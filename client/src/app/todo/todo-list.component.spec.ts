@@ -21,7 +21,7 @@ describe('Todo list', () => {
     };
 
     beforeEach(() => {
-        // stub UserService for test purposes
+        // stub TodoService for test purposes
         todoListServiceStub = {
             getTodos: () => Observable.of([
                 {
@@ -92,7 +92,7 @@ describe('Todo list', () => {
 
     //Write down more tests about STATUS todo lists HERE
 
-describe('Misbehaving User List', () => {
+describe('Misbehaving Todo List', () => {
     let todoList: TodoListComponent;
     let fixture: ComponentFixture<TodoListComponent>;
 
@@ -124,7 +124,7 @@ describe('Misbehaving User List', () => {
         });
     }));
 
-    it('generates an error if we don\'t set up a UserListService', () => {
+    it('generates an error if we don\'t set up a TodoListService', () => {
         // Since the observer throws an error, we don't expect users to be defined.
         expect(todoList.todos).toBeUndefined();
     });
