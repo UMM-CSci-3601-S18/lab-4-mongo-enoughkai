@@ -29,13 +29,13 @@ describe('Todo component', () => {
                     owner: 'Michelle',
                     status: false,
                     body: 'BIT',
-                    category: 'Just player'
+                    category: 'Just playa'
                 },
                 {
                     _id: 'Maureen_id',
                     owner: 'Yogi',
                     status: true,
-                    body: 'Fridley',
+                    body: 'Fridley high school',
                     category: 'Is an amazing person'
                 }
             ].find(todo => todo._id === todoId))
@@ -59,6 +59,14 @@ describe('Todo component', () => {
         expect(todoComponent.todo).toBeDefined();
         expect(todoComponent.todo.owner).toBe('Veronica');
         expect(todoComponent.todo.category).toBe('Soccer Player');
+
+    });
+
+    it('can retrieve Salvi by ID', () => {
+        todoComponent.setId('salvi_id');
+        expect(todoComponent.todo).toBeDefined();
+        expect(todoComponent.todo.owner).toBe('Michelle');
+        expect(todocomponet.todo.category).toBe('Just Playa');
 
     });
 
