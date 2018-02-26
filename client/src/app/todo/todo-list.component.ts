@@ -3,7 +3,7 @@ import {TodoListService} from './todo-list.service';
 import {Todo} from './todo';
 import {Observable} from 'rxjs/Observable';
 import {MatDialog} from '@angular/material';
-import {AddTodoComponent} from './add-todo.component';
+import {AddTodoComponent} from "./add-todo.component";
 
 @Component({
     selector: 'todo-list-component',
@@ -12,22 +12,23 @@ import {AddTodoComponent} from './add-todo.component';
 })
 
 export class TodoListComponent implements OnInit {
-    // These are public so that tests can reference them (.spec.ts)
+// These are public so that tests can reference them (.spec.ts)
     public todos: Todo[];
     public filteredTodos: Todo[];
 
-    // These are the target values used in searching.
-    // We should rename them to make that clearer.
     public todoOwner: string;
-    public todoStatus: string;
-    public todoId: string;
-    public todoCategory: string;
+    public todoStatus: string = 'all';
     public todoBody: string;
+    public todoCategory: string;
 
-    // The ID of the
     private highlightedID: {'$oid': string} = { '$oid': '' };
 
-    // Inject the TodoListService into this component.
+
+// Inject the TodoListService into this component.
+// That's what happens in the following constructor.
+//
+// We can call upon the service for interacting
+// with the server.
     constructor(public todoListService: TodoListService, public dialog: MatDialog) {
 
     }
@@ -37,7 +38,7 @@ export class TodoListComponent implements OnInit {
     }
 
     openDialog(): void {
-        const newTodo: Todo = {_id: '', owner: '', status: false, body: '', category: ''};
+        const newTodo: Todo = {_id: '', owner: '', status: false, category: '', body: ''};
         const dialogRef = this.dialog.open(AddTodoComponent, {
             width: '500px',
             data: { todo: newTodo }
@@ -45,8 +46,8 @@ export class TodoListComponent implements OnInit {
 
         dialogRef.afterClosed().subscribe(result => {
             this.todoListService.addNewTodo(result).subscribe(
-                addTodoResult => {
-                    this.highlightedID = addTodoResult;
+                result => {
+                    this.highlightedID = result;
                     this.refreshTodos();
                 },
                 err => {
@@ -57,26 +58,9 @@ export class TodoListComponent implements OnInit {
         });
     }
 
-    public filterTodos(searchOwner: string, searchId: string, searchStatus: string, searchBody: string, searchCategory: string): Todo[] {
+    public filterTodos(searchBody: string, searchCategory: string): Todo[] {
 
         this.filteredTodos = this.todos;
-
-         // Filter by owner
-        if (searchOwner != null) {
-            searchOwner = searchOwner.toLocaleLowerCase();
-
-            this.filteredTodos = this.filteredTodos.filter(todo => {
-                return !searchOwner || todo.owner.toLowerCase().indexOf(searchOwner) !== -1;
-            });
-        }
-
-        /*// Filter by id
-        if (searchId != null) {
-
-            this.filteredTodos = this.filteredTodos.filter(todo => {
-                return !searchId || todo._id.toLowerCase().indexOf(searchId) !== -1;
-            });
-        }*/
 
         // Filter by body
         if (searchBody != null) {
@@ -96,20 +80,12 @@ export class TodoListComponent implements OnInit {
             });
         }
 
-        // Filter by status
-        if (searchStatus != null) {
-            searchStatus = searchStatus.toLocaleLowerCase();
-
-            this.filteredTodos = this.filteredTodos.filter(todo => {
-                return !searchStatus || String(todo.status).toLowerCase().indexOf(searchStatus) !== -1;
-            });
-        }
-
         return this.filteredTodos;
     }
 
+
     /**
-     * Starts an asynchronous operation to update the users list
+     * Starts an asynchronous operation to update the todos list
      *
      */
     refreshTodos(): Observable<Todo[]> {
@@ -118,12 +94,11 @@ export class TodoListComponent implements OnInit {
         //
         // Subscribe waits until the data is fully downloaded, then
         // performs an action on it (the first lambda)
-
-        const todos: Observable<Todo[]> = this.todoListService.getTodos();
+        const todos: Observable<Todo[]> = this.todoListService.getTodos(this.todoStatus, this.todoBody);
         todos.subscribe(
-            newTodos => {
-                this.todos = newTodos;
-                this.filterTodos(this.todoOwner, this.todoStatus , this.todoBody, this.todoId, this.todoCategory);
+            returnedTodos => {
+                this.todos = returnedTodos;
+                this.filterTodos(this.todoBody, this.todoCategory);
             },
             err => {
                 console.log(err);
@@ -131,9 +106,8 @@ export class TodoListComponent implements OnInit {
         return todos;
     }
 
-
     loadService(): void {
-        this.todoListService.getTodos(this.todoOwner).subscribe(
+        this.todoListService.getTodos(this.todoStatus, this.todoOwner).subscribe(
             todos => {
                 this.todos = todos;
                 this.filteredTodos = this.todos;
