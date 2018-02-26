@@ -10,11 +10,16 @@ import {HomeComponent} from './home/home.component';
 import {UserComponent} from './users/user.component';
 import {UserListComponent} from './users/user-list.component';
 import {UserListService} from './users/user-list.service';
+import {TodoListService} from "./todo/todo-list.service";
 import {Routing} from './app.routes';
 import {APP_BASE_HREF} from '@angular/common';
 
 import {CustomModule} from './custom.module';
 import {AddUserComponent} from './users/add-user.component';
+import {TodoListComponent} from "./todo/todo-list.component";
+import {TodoComponent} from "./todo/todo.component";
+import {AddTodoComponent} from "./todo/add-todo.component";
+import {TodoButton} from "./todo/todo-button.component";
 
 
 @NgModule({
@@ -29,10 +34,15 @@ import {AddUserComponent} from './users/add-user.component';
         HomeComponent,
         UserListComponent,
         UserComponent,
-        AddUserComponent
+        AddUserComponent,
+        TodoListComponent,
+        TodoComponent,
+        AddTodoComponent,
+        TodoButton
     ],
     providers: [
         UserListService,
+        TodoListService,
         {provide: APP_BASE_HREF, useValue: '/'},
         {provide: MATERIAL_COMPATIBILITY_MODE, useValue: true}
     ],
