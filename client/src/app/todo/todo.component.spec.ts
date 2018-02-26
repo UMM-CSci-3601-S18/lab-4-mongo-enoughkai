@@ -66,7 +66,7 @@ describe('Todo component', () => {
         todoComponent.setId('salvi_id');
         expect(todoComponent.todo).toBeDefined();
         expect(todoComponent.todo.owner).toBe('Michelle');
-        expect(todocomponet.todo.category).toBe('Just Playa');
+        expect(todoComponent.todo.category).toBe('Just Playa');
 
     });
 

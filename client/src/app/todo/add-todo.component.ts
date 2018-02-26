@@ -7,9 +7,8 @@ import {Todo} from './todo';
     templateUrl: 'add-todo.component.html',
 })
 export class AddTodoComponent {
-    constructor(
-        public dialogRef: MatDialogRef<AddTodoComponent>,
-        @Inject(MAT_DIALOG_DATA) public data: {todo: Todo}) {
+    constructor(public dialogRef: MatDialogRef<AddTodoComponent>,
+                @Inject(MAT_DIALOG_DATA) public data: { todo: Todo }) {
     }
 
     onNoClick(): void {
