@@ -98,8 +98,28 @@ describe('Todo list', () => {
         });
     });
 
+    it('todo list filters by category', () => {
+        expect(todoList.filteredTodos.length).toBe(3);
+        todoList.todoCategory = 'GP';
+        todoList.refreshTodos().subscribe(() => {
+            expect(todoList.filteredTodos.length).toBe(1);
+        });
+    });
 
-    describe('Misbehaving Todo List', () => {
+
+    it('todo list filters by category and owner', () => {
+
+        expect(todoList.filteredTodos.length).toBe(3);
+        todoList.todoCategory = 'GP';
+        todoList.todoBody = 'a';
+        todoList.refreshTodos().subscribe(() => {
+            expect(todoList.filteredTodos.length).toBe(1);
+        });
+    });
+});
+
+
+describe('Misbehaving Todo List', () => {
         let todoList: TodoListComponent;
         let fixture: ComponentFixture<TodoListComponent>;
 
@@ -138,7 +158,7 @@ describe('Todo list', () => {
     });
 
 
-    describe('Adding a todo', () => {
+describe('Adding a todo', () => {
         let todoList: TodoListComponent;
         let fixture: ComponentFixture<TodoListComponent>;
         const newTodo: Todo = {
@@ -154,7 +174,7 @@ describe('Todo list', () => {
 
         let todoListServiceStub: {
             getTodos: () => Observable<Todo[]>,
-            addNewTodo: (newTodo: Todo) => Observable<{ '$oid': string }>
+            addNewTodo: (newTodo: Todo) => Observable<{ '$oid': string}>
         };
         let mockMatDialog: {
             open: (AddTodoComponent, any) => {
@@ -210,4 +230,3 @@ describe('Todo list', () => {
 
 
     });
-})

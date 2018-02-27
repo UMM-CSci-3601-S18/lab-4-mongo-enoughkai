@@ -78,12 +78,12 @@ describe('Todo list service: ', () => {
         req.flush(testTodos);
     });
 
-    it('getTodos(todoBody) adds appropriate param string to called URL', () => {
-        todoListService.getTodos("m").subscribe(
+    it('getTodos(todoStatus & todoOwner) adds appropriate param string to called URL', () => {
+        todoListService.getTodos("f","y").subscribe(
             todos => expect(todos).toEqual(mTodos)
         );
 
-        const req = httpTestingController.expectOne(todoListService.baseUrl + '?category=m&');
+        const req = httpTestingController.expectOne(todoListService.baseUrl + '?status=f&owner=y');
         expect(req.request.method).toEqual('GET');
         req.flush(mTodos);
     });
@@ -99,5 +99,27 @@ describe('Todo list service: ', () => {
         const req = httpTestingController.expectOne(expectedUrl);
         expect(req.request.method).toEqual('GET');
         req.flush(targetTodo);
+    });
+
+    it('adding a todo calls api/todos/new', () => {
+        const hunter_id = { '$oid': 'hunter_id' };
+        const newTodo: Todo = {
+            _id: 'hunter_id',
+            owner: 'Hunter',
+            status: true,
+            category: 'hoodies',
+            body: 'working on his lab alone in a hoodie'
+        };
+
+        todoListService.addNewTodo(newTodo).subscribe(
+            id => {
+                expect(id).toBe(hunter_id);
+            }
+        );
+
+        const expectedUrl: string = todoListService.baseUrl + '/new';
+        const req = httpTestingController.expectOne(expectedUrl);
+        expect(req.request.method).toEqual('POST');
+        req.flush(hunter_id);
     });
 })
