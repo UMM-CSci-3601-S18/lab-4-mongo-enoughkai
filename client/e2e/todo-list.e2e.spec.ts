@@ -37,7 +37,7 @@ describe('Todo list', () => {
         expect(page.getUniqueTodo2('Eiusmod commodo officia amet aliquip est ipsum nostrud duis sunt voluptate mollit excepteur. Sunt non in pariatur et culpa est sunt.')).toEqual('Workman');
     });
     ////////////////////////////////////////////////
-    it('Should open the expansion panel and get the company', () => {
+    /it('should go to owner and  ', () => {
         page.navigateTo();
         page.getCompany('DATA');
         browser.actions().sendKeys(Key.ENTER).perform();
