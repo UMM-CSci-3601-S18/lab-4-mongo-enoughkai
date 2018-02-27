@@ -66,7 +66,7 @@
                     <mat-expansion-panel #elem [id]="todo._id['$oid']" class="todo" *ngFor="let todo of this.filterTodos(todoBody, todoCategory)">
                         <mat-expansion-panel-header>
 
-                            <mat-panel-title><mat-icon id="check" *ngIf="todo.status">check_circle</mat-icon><mat-icon id="exed" *ngIf="!todo.status">highlight_off</mat-icon> &nbsp; {{todo.owner}}</mat-panel-title>
+                            <mat-panel-title><mat-icon id="check" *ngIf="todo.status">check_box</mat-icon><mat-icon id="exed" *ngIf="!todo.status">check_box_outline_blank</mat-icon> &nbsp; {{todo.owner}}</mat-panel-title>
 
                         </mat-expansion-panel-header>
                         <mat-panel-description>ID: {{todo._id['$oid']}}</mat-panel-description>
