@@ -2,13 +2,10 @@ package umm3601.todo;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.util.JSON;
-import org.bson.types.ObjectId;
 import spark.Request;
 import spark.Response;
 
-
 public class TodoRequestHandler {
-
     private final TodoController todoController;
     public TodoRequestHandler(TodoController todoController){
         this.todoController = todoController;
@@ -18,7 +15,7 @@ public class TodoRequestHandler {
      *
      * @param req the HTTP request
      * @param res the HTTP response
-     * @return one user in JSON formatted string and if it fails it will return text with a different HTTP status code
+     * @return one todo in JSON formatted string and if it fails it will return text with a different HTTP status code
      */
     public String getTodoJSON(Request req, Response res){
         res.type("application/json");
@@ -44,6 +41,10 @@ public class TodoRequestHandler {
         }
     }
 
+    public String getTodoSummary(Request req, Response res) {
+        return todoController.getTodoSummary();
+    }
+
 
 
     /**Method called from Server when the 'api/todos' endpoint is received.
@@ -60,15 +61,15 @@ public class TodoRequestHandler {
     }
 
 
-    /**Method called from Server when the 'api/users/new'endpoint is recieved.
-     * Gets specified user info from request and calls addNewUser helper method
+    /**Method called from Server when the 'api/todos/new'endpoint is recieved.
+     * Gets specified todo info from request and calls addNewTodo helper method
      * to append that info to a document
      *
      * @param req the HTTP request
      * @param res the HTTP response
-     * @return a boolean as whether the user was added successfully or not
+     * @return a boolean as whether the todo was added successfully or not
      */
-    public String addNewTodo(Request req, Response res)
+    public boolean addNewTodo(Request req, Response res)
     {
 
         res.type("application/json");
@@ -86,26 +87,26 @@ public class TodoRequestHandler {
                     String body = dbO.getString("body");
                     String category = dbO.getString("category");
 
-                    System.err.println("Adding new todo [owner=" + owner + ", status=" + status + " body=" + body + " category=" + category + ']');
-                    return todoController.addNewTodo(owner, status, body, category).toString();
+                    System.err.println("Adding new todo [owner=" + owner + ", category=" + category + " body=" + body + " status=" + status + ']');
+                    return todoController.addNewTodo(owner, category, body, status);
                 }
                 catch(NullPointerException e)
                 {
                     System.err.println("A value was malformed or omitted, new todo request failed.");
-                    return null;
+                    return false;
                 }
 
             }
             else
             {
                 System.err.println("Expected BasicDBObject, received " + o.getClass());
-                return null;
+                return false;
             }
         }
         catch(RuntimeException ree)
         {
             ree.printStackTrace();
-            return null;
+            return false;
         }
     }
 }
