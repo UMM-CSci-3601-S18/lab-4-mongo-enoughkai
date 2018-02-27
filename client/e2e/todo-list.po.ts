@@ -63,6 +63,13 @@ export class TodoPage {
         return todo;
     }
 
+    getUniqueTodo3(owner: string) {
+        const todo = element(by.id(owner)).getText();
+        this.highlightElement(by.id(owner));
+
+        return todo;
+    }
+
     getTodos() {
         return element.all(by.classOwner('todos'));
     }
