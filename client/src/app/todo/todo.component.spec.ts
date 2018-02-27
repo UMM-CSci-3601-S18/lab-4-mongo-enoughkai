@@ -63,10 +63,10 @@ describe('Todo component', () => {
     });
 
     it('can retrieve Salvi by ID', () => {
-        todoComponent.setId('salvi_id');
+        todoComponent.setId('Salvi_id');
         expect(todoComponent.todo).toBeDefined();
         expect(todoComponent.todo.owner).toBe('Michelle');
-        expect(todoComponent.todo.category).toBe('Just Playa');
+        expect(todoComponent.todo.category).toBe('Just playa');
 
     });
 
