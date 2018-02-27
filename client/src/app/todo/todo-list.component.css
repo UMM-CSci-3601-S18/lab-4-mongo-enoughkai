@@ -12,3 +12,64 @@
     padding-right: 14px;
 }
 
+#addNewTodo{
+    background:none;
+}
+
+#todo-list-title {
+    font-size: 500%;
+    font-family: "Brush Script MT",cursive;
+    margin: auto;
+    text-align: right;
+    color:black;
+}
+
+.mat-card{
+    margin: 0%;
+    background:none;
+    background-image: url("http://blog.hostbaby.com/backgrounds/bg_roses.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+.mat-expansion-panel{
+    border-radius: 5px;
+    margin-left:350px;
+    background:none;
+}
+
+.mat-card-content{
+    backgound:none;
+}
+
+#search{
+    position:fixed;
+    top:70px;
+    left:0;
+
+}
+
+#matTitle, #_id, #status, #body, #category{
+    color: black;
+    font-family: "Brush Script MT",cursive;
+    margin: auto;
+    text-align: left;
+
+}
+
+#check{
+    color:green;
+}
+
+#close{
+    color:red;
+}
+
+#complete{
+    color:green;
+}
+
+#incomplete{
+    color:red;
+}
+
