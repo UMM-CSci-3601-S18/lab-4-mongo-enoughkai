@@ -4,10 +4,10 @@ import com.mongodb.MongoClient;
 import com.mongodb.client.MongoDatabase;
 import spark.Request;
 import spark.Response;
-import umm3601.user.UserController;
-import umm3601.user.UserRequestHandler;
 import umm3601.todo.TodoController;
 import umm3601.todo.TodoRequestHandler;
+import umm3601.user.UserController;
+import umm3601.user.UserRequestHandler;
 
 import java.io.IOException;
 
@@ -16,22 +16,18 @@ import static spark.Spark.*;
 import static spark.debug.DebugScreen.enableDebugScreen;
 
 public class Server {
-    private static final String databaseName = "dev";
+    private static final String userDatabaseName = "dev";
     private static final int serverPort = 4567;
 
     public static void main(String[] args) throws IOException {
 
         MongoClient mongoClient = new MongoClient();
-        // User database & controller
-        MongoDatabase userDatabase = mongoClient.getDatabase(databaseName);
+        MongoDatabase userDatabase = mongoClient.getDatabase(userDatabaseName);
 
         UserController userController = new UserController(userDatabase);
         UserRequestHandler userRequestHandler = new UserRequestHandler(userController);
 
-        // todo database & controller
-        MongoDatabase todoDatabase = mongoClient.getDatabase(databaseName);
-
-        TodoController todoController = new TodoController(todoDatabase);
+        TodoController todoController = new TodoController(userDatabase);
         TodoRequestHandler todoRequestHandler = new TodoRequestHandler(todoController);
 
         //Configure Spark
@@ -67,17 +63,22 @@ public class Server {
 
         redirect.get("/", "http://localhost:9000");
 
+        /// User Endpoints ///////////////////////////
+        /////////////////////////////////////////////
+
         //List users, filtered using query parameters
 
         get("api/users", userRequestHandler::getUsers);
         get("api/users/:id", userRequestHandler::getUserJSON);
         post("api/users/new", userRequestHandler::addNewUser);
 
-        //List todos, filtered using query parameters
+        //Todo Endpoints
 
         get("api/todos", todoRequestHandler::getTodos);
         get("api/todos/:id", todoRequestHandler::getTodoJSON);
         post("api/todos/new", todoRequestHandler::addNewTodo);
+        get("api/todoSummary", todoRequestHandler::getTodoSummary);
+
 
         // An example of throwing an unhandled exception so you can see how the
         // Java Spark debugger displays errors like this.
