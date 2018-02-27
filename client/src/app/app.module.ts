@@ -48,6 +48,7 @@ import {TodoButton} from "./todo/todo-button.component";
     ],
     entryComponents: [
       AddUserComponent,
+        AddTodoComponent
     ],
     bootstrap: [AppComponent]
 })
