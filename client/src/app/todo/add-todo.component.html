@@ -17,7 +17,8 @@
                     <input matInput #input id="statusField" placeholder="Status" [(ngModel)]="data.todo.status">
                 </mat-form-field>
                 <!-- [mat-dialog-close]="data.todo" causes the data.todo object to be returned when the dialog is closed. -->
-                <button mat-button id="confirmAddTodoButton" [mat-dialog-close]="data.todo" type="button">Add ToDo</button>
+                <button mat-button id="confirmAddTodoButton" [mat-dialog-close]="data.todo" type="button">Add Todo
+                </button>
             </mat-card-content>
         </mat-card>
         <button mat-raised-button id="exitWithoutAddingButton" (click)="onNoClick()" type="button">Exit</button>

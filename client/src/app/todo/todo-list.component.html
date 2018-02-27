@@ -19,7 +19,7 @@
                     <mat-card-content>
                 <span id="ownerInput">
                     <mat-form-field>
-                        <input matInput id="todoOwner" #input type="search" placeholder="Search for owner" [(ngModel)]="todoOwner" />
+                        <input matInput id="todoOwner" #input type="search" placeholder="Filter by owner" [(ngModel)]="todoOwner" />
                         <button mat-button id="ownerClearSearch" type="button" *ngIf="todoOwner" matSuffix mat-icon-button aria-label="clear" (click)="todoOwner='';loadService()">
                             <mat-icon>close</mat-icon>
                         </button>
@@ -49,12 +49,13 @@
 
                         <br>
 
+
                         <mat-select matInput [(ngModel)]="todoCategory" placeholder="Select a category">
                             <mat-option>All</mat-option>
-                            <mat-option value="groceries">Groceries </mat-option>
-                            <mat-option value="homework">Homework</mat-option>
-                            <mat-option value="software design">Software Design</mat-option>
-                            <mat-option value="video games">Video Games</mat-option>
+                            <mat-option value="groceries">groceries </mat-option>
+                            <mat-option value="homework">homework</mat-option>
+                            <mat-option value="software design">software design</mat-option>
+                            <mat-option value="video games">video games</mat-option>
                         </mat-select>
                     </mat-card-content>
                 </mat-card>
