@@ -56,6 +56,13 @@ export class TodoPage {
         return todo;
     }
 
+    getUniqueTodo2(body: string) {
+        const todo = element(by.id(body)).getText();
+        this.highlightElement(by.id(body));
+
+        return todo;
+    }
+
     getTodos() {
         return element.all(by.classOwner('todos'));
     }
@@ -76,3 +83,4 @@ export class TodoPage {
     }
 
 }
+
