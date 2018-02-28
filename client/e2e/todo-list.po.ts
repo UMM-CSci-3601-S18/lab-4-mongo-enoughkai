@@ -19,6 +19,13 @@ export class TodoPage {
 
         return browser.executeScript(setStyle, element(byObject).getWebElement(), 'color: red; background-color: yellow;');
     }
+    selectDownKey() {
+        browser.actions().sendKeys(Key.ARROW_DOWN).perform();
+    }
+
+    selectEnter() {
+        browser.actions().sendKeys(Key.ENTER).perform();
+    }
 
     getTodoTitle() {
         const title = element(by.id('todo-list-title')).getText();
@@ -31,14 +38,6 @@ export class TodoPage {
         const input = element(by.id('todoOwner'));
         input.click();
         input.sendKeys(owner);
-    }
-
-    selectUpKey() {
-        browser.actions().sendKeys(Key.ARROW_UP).perform();
-    }
-
-    backspace() {
-        browser.actions().sendKeys(Key.BACK_SPACE).perform();
     }
 
     getBody(body: string) {
@@ -70,15 +69,6 @@ export class TodoPage {
         return todo;
     }
 
-    getTodos() {
-        return element.all(by.classOwner('todos'));
-    }
-
-    clickClearBodySearch() {
-        const input = element(by.id('bodyClearSearch'));
-        input.click();
-    }
-
     buttonExists(): promise.Promise<boolean> {
         this.highlightElement(by.id('addNewTodo'));
         return element(by.id('addNewTodo')).isPresent();
@@ -88,6 +78,56 @@ export class TodoPage {
         this.highlightElement(by.id('addNewTodo'));
         return element(by.id('addNewTodo')).click();
     }
+
+    chooseCompleteStatus() {
+        const input = element(by.id('complete'));
+        input.click();
+    }
+
+    chooseIncompleteStatus() {
+        const input = element(by.id('incomplete'));
+        input.click();
+    }
+
+    chooseAllStatuses() {
+        const input = element(by.id('allStatus'));
+        input.click();
+    }
+    chooseGroceries() {
+        const input = element(by.id('categoryList'));
+        input.click();
+        this.selectDownKey();
+        this.selectEnter();
+    }
+
+    chooseHomework() {
+        const input = element(by.id('categoryList'));
+        input.click();
+        this.selectDownKey();
+        this.selectDownKey();
+        this.selectEnter();
+    }
+
+    chooseSoftwareDesign() {
+        const input = element(by.id('categoryList'));
+        input.click();
+        this.selectDownKey();
+        this.selectDownKey();
+        this.selectDownKey();
+        this.selectEnter();
+    }
+
+    chooseVideoGames() {
+        const input = element(by.id('categoryList'));
+        input.click();
+        this.selectDownKey();
+        this.selectDownKey();
+        this.selectDownKey();
+        this.selectDownKey();
+        this.selectEnter();
+    }
+
+
 
 }
 

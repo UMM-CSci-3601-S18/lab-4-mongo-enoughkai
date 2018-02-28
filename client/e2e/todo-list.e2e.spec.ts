@@ -58,6 +58,34 @@ describe('Todo list', () => {
         expect(page.buttonExists()).toBeTruthy();
     });
 
+    it('should select the groceries category and check that correct element is returned', () => {
+        page.navigateTo();
+        page.chooseGroceries();
+        expect(page.getUniqueTodo('58af3a600343927e48e8721e')).toEqual('check_circle\n' +
+            '  Blanche');
+    })
+
+    it('should select the homework category and check that correct element is returned', () => {
+        page.navigateTo();
+        page.chooseHomework();
+        expect(page.getUniqueTodo('58af3a600343927e48e87219')).toEqual('highlight_off\n' +
+            '  Workman');
+    })
+
+    it('should select the software design category and check that correct element is returned', () => {
+        page.navigateTo();
+        page.chooseSoftwareDesign();
+        expect(page.getUniqueTodo('58af3a600343927e48e8720f')).toEqual('highlight_off\n' +
+            '  Blanche');
+    })
+
+    it('should select the video games category and check that correct element is returned', () => {
+        page.navigateTo();
+        page.chooseVideoGames();
+        expect(page.getUniqueTodo('58af3a600343927e48e87214')).toEqual('check_circle\n' +
+            '  Barry');
+    })
+
     //checks if a dialog box is opened or not
 
     it('Should open a dialog box when add todo button is clicked', () => {
@@ -66,6 +94,7 @@ describe('Todo list', () => {
         element(by.id('addNewTodo')).click();
         expect(element(by.css('add-todo')).isPresent()).toBeTruthy('There should be a modal window now');
     });
+
     // checks if we actually add things to the database or not
 
     it('Should actually add the Todo with the information we put in the fields', () => {
@@ -80,5 +109,30 @@ describe('Todo list', () => {
         setTimeout(() => {
             expect(page.getUniqueTodo3('Nic McPhee')).toMatch('Nic McPhee');
         }, 10000);
+// checks if we try to filter things with complete statuses
+
+        it('should select filter by status: \'complete\' radio button and check that complete status is returned', () => {
+            page.navigateTo();
+            page.chooseCompleteStatus();
+            expect(page.getUniqueTodo('58af3a600343927e48e87212')).toEqual('check_circle\n' +
+                '  Blanche');
+        })
+// checks if we try to filter things with incomplete statuses
+        it('should select filter by status: \'incomplete\' radio button and check that complete status is returned', () => {
+            page.navigateTo();
+            page.chooseIncompleteStatus();
+            expect(page.getUniqueTodo('58af3a600343927e48e8720f')).toEqual('highlight_off\n' +
+                '  Blanche');
+        })
+// checks if we try to filter things with all statuses
+        it('should select filter by status: \'all\' radio button and check that complete status is returned', () => {
+            page.navigateTo();
+            page.chooseAllStatuses();
+            page.typeAOwner('bar');
+            page.getBody('Nisi sunt aliqua');
+            expect(page.getUniqueTodo('58af3a600343927e48e872bc')).toEqual('check_circle\n' +
+                '  Barry');
+        })
+
     });
 });
