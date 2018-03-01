@@ -28,8 +28,8 @@ public class TodoControllerSpec {
     public void clearAndPopulateDB() throws IOException {
         MongoClient mongoClient = new MongoClient();
         MongoDatabase db = mongoClient.getDatabase("test");
-        MongoCollection<Document> userDocuments = db.getCollection("todos");
-        userDocuments.drop();
+        MongoCollection<Document> todoDocuments = db.getCollection("todos");
+        todoDocuments.drop();
         List<Document> testTodos = new ArrayList<>();
         testTodos.add(Document.parse("{\n" +
             "                    owner: \"Kriss\",\n" +
@@ -52,15 +52,15 @@ public class TodoControllerSpec {
 
         ahnafId = new ObjectId();
         BasicDBObject ahnaf = new BasicDBObject("_id", ahnafId);
-        ahnaf = ahnaf.append("owner", "ahnaf")
+        ahnaf = ahnaf.append("owner", "Ahnaf")
             .append("status", false)
             .append("body", "is bangladeshi")
             .append("category", "roomateno4");
 
 
 
-        userDocuments.insertMany(testTodos);
-        userDocuments.insertOne(Document.parse(ahnaf.toJson()));
+        todoDocuments.insertMany(testTodos);
+        todoDocuments.insertOne(Document.parse(ahnaf.toJson()));
 
         // It might be important to construct this _after_ the DB is set up
         // in case there are bits in the constructor that care about the state
@@ -96,13 +96,13 @@ public class TodoControllerSpec {
         BsonArray docs = parseJsonArray(jsonResult);
 
         assertEquals("Should be 4 todos", 4, docs.size());
-        List<String> names = docs
+        List<String> owners = docs
             .stream()
             .map(TodoControllerSpec::getOwner)
             .sorted()
             .collect(Collectors.toList());
-        List<String> expectedOwners = Arrays.asList("Kriss", "Kazuto", "Dennis", "Ahnaf");
-        assertEquals("Owners should match", expectedOwners, names);
+        List<String> expectedOwners = Arrays.asList("Ahnaf", "Dennis", "Kazuto", "Kriss");
+        assertEquals("Owners should match", expectedOwners, owners);
     }
 
     @Test
@@ -118,7 +118,7 @@ public class TodoControllerSpec {
             .map(TodoControllerSpec::getOwner)
             .sorted()
             .collect(Collectors.toList());
-        List<String> expectedOwners = Arrays.asList("Kazuto", "Ahnaf");
+        List<String> expectedOwners = Arrays.asList("Ahnaf","Kazuto");
         assertEquals("Owners should match", expectedOwners, owners);
     }
 
@@ -155,16 +155,16 @@ public class TodoControllerSpec {
         Map<String, String[]> argMap = new HashMap<>();
         //Mongo in TodoController is doing a regex search so can just take a Java Reg. Expression
         //This will search the bodies containing "ea"
-        argMap.put("body", new String[] { "american" });
+        argMap.put("body", new String[] { "i" });
         String jsonResult = todoController.getTodos(argMap);
         BsonArray docs = parseJsonArray(jsonResult);
-        assertEquals("Should be 2 todos", 2, docs.size());
+        assertEquals("Should be 4 todos", 4, docs.size());
         List<String> owner = docs
             .stream()
             .map(TodoControllerSpec::getOwner)
             .sorted()
             .collect(Collectors.toList());
-        List<String> expectedOwner = Arrays.asList("Katherine", "Kriss" );
+        List<String> expectedOwner = Arrays.asList("Ahnaf", "Dennis", "Kazuto", "Kriss");
         assertEquals("Owners should match", expectedOwner, owner);
 
     }
@@ -177,13 +177,32 @@ public class TodoControllerSpec {
         argMap.put("owner", new String[] { "K" });
         String jsonResult = todoController.getTodos(argMap);
         BsonArray docs = parseJsonArray(jsonResult);
-        assertEquals("Should be 3 todos", 3, docs.size());
+        assertEquals("Should be 2 todos", 2, docs.size());
         List<String> owner = docs
             .stream()
             .map(TodoControllerSpec::getOwner)
             .sorted()
             .collect(Collectors.toList());
-        List<String> expectedOwner = Arrays.asList("Katherine", "Kriss", "Kazuto");
+        List<String> expectedOwner = Arrays.asList("Kazuto","Kriss");
+        assertEquals("Owners should match", expectedOwner, owner);
+
+    }
+
+    @Test
+    public void getTodoByCategory(){
+        Map<String, String[]> argMap = new HashMap<>();
+        //Mongo in TodoController is doing a regex search so can just take a Java Reg. Expression
+        //This will search the category containing an m or c
+        argMap.put("category", new String[] { "r" });
+        String jsonResult = todoController.getTodos(argMap);
+        BsonArray docs = parseJsonArray(jsonResult);
+        assertEquals("Should be 4 todos", 4, docs.size());
+        List<String> owner = docs
+            .stream()
+            .map(TodoControllerSpec::getOwner)
+            .sorted()
+            .collect(Collectors.toList());
+        List<String> expectedOwner = Arrays.asList("Ahnaf", "Dennis", "Kazuto", "Kriss");
         assertEquals("Owners should match", expectedOwner, owner);
 
     }
