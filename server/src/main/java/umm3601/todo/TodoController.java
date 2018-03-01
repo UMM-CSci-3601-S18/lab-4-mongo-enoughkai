@@ -109,21 +109,64 @@ public class TodoController {
 
     public String getTodoSummary() {
 
-        //get number of todos complete for each owner
-        AggregateIterable<Document> totalByOwner = todoCollection.aggregate(
-            Arrays.asList(
-                Aggregates.group("$owner", Accumulators.sum("count", 1))
-            )
-        );
+        Document summaryDoc = new Document();
 
-        AggregateIterable<Document> doneByOwner = todoCollection.aggregate(
+        String[] owners = {"Fry", "Blanche", "Barry", "Roberta", "Workman", "Dawn"};
+        double[] ownerCounts = new double[6];
+        double track;
+
+        for (int i = 0; i < 6; i++) {
+            Document doc = new Document("owner", owners[i]);
+
+            ownerCounts[i] = 100 / (double)todoCollection.count(doc);
+        }
+
+        String[] categories = {"groceries", "homework", "video games", "software design"};
+        double[] categoryCounts = new double[4];
+
+        for (int i = 0; i < 4; i++) {
+            Document doc = new Document("category", categories[i]);
+
+            categoryCounts[i] = 100 / (double)todoCollection.count(doc);
+        }
+
+        double count = todoCollection.count();
+        double percent = 100 / count;
+
+        //return the percentage of todos done from the entire database
+        summaryDoc.append("Total Todos Complete" , todoCollection.aggregate(
             Arrays.asList(
                 Aggregates.match(Filters.eq("status", true)),
-                Aggregates.group("$owner", Accumulators.sum("count", 1))
+                Aggregates.group("Total", Accumulators.sum("finished todos", 1) , Accumulators.sum("percent done", percent))
+            )
             )
         );
 
-        return JSON.serialize(doneByOwner);
+        for (int i = 0; i < 6; i++) {
+            summaryDoc.append("Todos complete by " + owners[i], todoCollection.aggregate(
+                Arrays.asList(
+                    Aggregates.match(Filters.eq("owner", owners[i])),
+                    Aggregates.match(Filters.eq("status", true)),
+                    Aggregates.group("$owner", Accumulators.sum("finished todos", 1) , Accumulators.sum("percent done", ownerCounts[i]))
+                )
+                )
+            );
+
+        }
+
+        for (int i = 0; i < 4; i++) {
+            summaryDoc.append(categories[i] + " Todos complete", todoCollection.aggregate(
+                Arrays.asList(
+                    Aggregates.match(Filters.eq("category", categories[i])),
+                    Aggregates.match(Filters.eq("status", true)),
+                    Aggregates.group("$category", Accumulators.sum("finished todos", 1) , Accumulators.sum("percent done", categoryCounts[i]))
+                )
+                )
+            );
+
+        }
+
+        return summaryDoc.toJson();
     }
 
     public static void main(String[] args) {
